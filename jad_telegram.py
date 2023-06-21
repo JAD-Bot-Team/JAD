@@ -2,8 +2,10 @@ import telebot
 import random
 import speech_recognition as sr
 from dotenv import load_dotenv
+import os
 
-telegram_key = "TELEGRAM_KEY"
+load_dotenv()
+telegram_key = os.getenv("TELEGRAM_KEY")
 
 bot = telebot.TeleBot(telegram_key)
 

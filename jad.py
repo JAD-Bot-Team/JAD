@@ -1,9 +1,10 @@
-import sys
-from PyQt5 import QtCore, QtGui, QtWidgets
+
+from tkinter import Tk, Text, Button, END, Label
+from tkinter import ttk
 import openai
 
 # Set up your OpenAI API credentials
-openai.api_key = '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'
+openai.api_key = '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'
 
 # Initialize the conversation
 def start_conversation():
@@ -29,86 +30,87 @@ def generate_response(user_input):
     )
     return response.choices[0].text.strip()
 
-class ChatbotWindow(QtWidgets.QWidget):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("AI Chatbot")
-        self.setFixedSize(600, 600)  # Set a fixed window size
-        self.setup_ui()
-        
-        # Start the conversation and display the initial response
-        self.add_message(start_conversation(), is_user=False)
+def process_input():
+    user_input = text_input.get("1.0", END).strip()
+    if user_input.lower() == 'quit':
+        root.quit()
+    else:
+        # Add the user message to the conversation
+        output_text.insert(END, "User: " + user_input + "\n")
+        # Generate a response from the chatbot
+        response = generate_response(user_input)
+        # Add the chatbot response to the conversation
+        output_text.insert(END, "JAD: " + response + "\n\n")
+        # Clear the user input field
+        text_input.delete("1.0", END)
 
-    def setup_ui(self):
-        self.layout = QtWidgets.QVBoxLayout()
-        self.setLayout(self.layout)
+def voice_input():
+    # Placeholder function for voice input functionality
+    pass
 
-        # Create a scrollable text area for the conversation
-        self.conversation_text = QtWidgets.QTextEdit()
-        self.conversation_text.setReadOnly(True)
-        self.conversation_text.setFont(QtGui.QFont("Arial", 12))
-        self.layout.addWidget(self.conversation_text)
+def camera_input():
+    # Placeholder function for camera input functionality
+    pass
 
-        # Create an input field for user messages
-        self.user_input = QtWidgets.QLineEdit()
-        self.user_input.setFont(QtGui.QFont("Arial", 12))
-        self.user_input.returnPressed.connect(self.handle_user_input)
-        self.layout.addWidget(self.user_input)
+def show_chat_window():
+    welcome_frame.pack_forget()
+    chat_frame.pack()
 
-        # Create a send button
-        self.send_button = QtWidgets.QPushButton("Send")
-        self.send_button.setFont(QtGui.QFont("Arial", 12))
-        self.send_button.clicked.connect(self.handle_user_input)
-        self.layout.addWidget(self.send_button)
+root = Tk()
+root.title('JAD')
+root.geometry('500x750')
 
-        # Set the background and text colors
-        self.setStyleSheet("background-color: #F0F0F0;")
-        self.conversation_text.setStyleSheet("background-color: white; color: black;")
-        self.user_input.setStyleSheet("background-color: white; color: black;")
-        self.send_button.setStyleSheet("background-color: #4287f5; color: white;")
+style = ttk.Style(root)
+style.configure('.', font=('Arial', 12), foreground='white', background='black')
 
-    def handle_user_input(self):
-        user_message = self.user_input.text()
-        if user_message.lower() == 'quit':
-            QtWidgets.QApplication.quit()
-        else:
-            # Add the user message to the conversation
-            self.add_message(user_message, is_user=True)
-            
-            # Generate a response from the chatbot
-            response = generate_response(user_message)
-            
-            # Add the chatbot response to the conversation
-            self.add_message(response, is_user=False)
-            
-            # Clear the user input field
-            self.user_input.clear()
+root.configure(background='black')
 
-    def add_message(self, message, is_user=True):
-        if is_user:
-            self.conversation_text.append("<b>User:</b> " + message)
-        else:
-            self.conversation_text.append("<b>AI:</b> " + message)
-        
-        # Scroll to the bottom of the text area
-        self.conversation_text.verticalScrollBar().setValue(self.conversation_text.verticalScrollBar().maximum())
+welcome_frame = ttk.Frame(root)
+welcome_frame.pack(pady=100)
 
-        # Clear the formatting for the new line
-        self.conversation_text.setCurrentCharFormat(QtGui.QTextCharFormat())
+logo_label = Label(welcome_frame, text="JAD", font=("Arial", 24), fg="white", bg="black")
+logo_label.pack(pady=10)
 
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    window = ChatbotWindow()
-    
-    # Apply a modern style to the GUI
-    app.setStyle("Fusion")
-    
-    # Set a custom palette for the GUI
-    palette = QtGui.QPalette()
-    palette.setColor(QtGui.QPalette.Window, QtGui.QColor("#FFFFFF"))
-    palette.setColor(QtGui.QPalette.Base, QtGui.QColor("#F0F0F0"))
-    palette.setColor(QtGui.QPalette.Text, QtGui.QColor("#000000"))
-    app.setPalette(palette)
-    
-    window.show()
-    sys.exit(app.exec_())
+description_label = Label(welcome_frame, text='''Welcome to JAD!\n JAD is an AI-powered chatbot app.\n It allows users to have\n interactive conversations with an intelligent chatbot.\n The app integrates with OpenAI's text generation\n API to provide context-aware responses.''',font=("Arial", 14), fg="white", bg="black")
+
+description_label.pack(pady=100)
+
+get_started_button = Button(welcome_frame, text="Get Started", command=show_chat_window)
+get_started_button.pack(pady=20)
+
+chat_frame = ttk.Frame(root)
+
+output_label = Label(chat_frame, text="JAD ANSWERS", bg="black", fg="white")
+output_label.pack(pady=(20, 10))
+
+output_text = Text(chat_frame, height=25, bg="black", fg="white")
+output_text.pack(padx=10, pady=(5, 20), fill='x')
+
+input_label = Label(chat_frame, text="ASK JAD...", bg="black", fg="white")
+input_label.pack(pady=(10, 10))
+
+text_input = Text(chat_frame, height=3, bg="black", fg="white")
+text_input.pack(padx=10, fill='x')
+
+button_frame = ttk.Frame(chat_frame)
+button_frame.pack(pady=20)
+
+camera_button = Button(button_frame, text="Camera", command=camera_input)
+camera_button.pack(side="left", padx=10)
+
+send_button = Button(button_frame, text="Send", command=process_input)
+send_button.pack(side="left", padx=10)
+
+voice_button = Button(button_frame, text="Voice", command=voice_input)
+voice_button.pack(side="left", padx=10)
+
+# button 1
+btn1 = Button(button_frame, text='Quit !', command=root.destroy)
+btn1.pack(side="left", padx=10)
+
+welcome_frame.configure(style='TFrame')
+chat_frame.configure(style='TFrame')
+
+welcome_frame.tkraise()
+
+root.mainloop()

@@ -1,8 +1,9 @@
 import telebot
 import random
 import speech_recognition as sr
+from dotenv import load_dotenv
 
-telegram_key = "5836999574:AAGXMmShLBarONcnDThnYBj0qyc6i_Z1OGw"
+telegram_key = "TELEGRAM_KEY"
 
 bot = telebot.TeleBot(telegram_key)
 
@@ -73,5 +74,5 @@ def handle_message(message, text=None):
 bot.infinity_polling()
 
 
-## telegram_key = "5836999574:AAGXMmShLBarONcnDThnYBj0qyc6i_Z1OGw"
+
 ## openai.api_key = "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"

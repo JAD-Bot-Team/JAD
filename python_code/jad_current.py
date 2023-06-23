@@ -1,12 +1,11 @@
 import os
 import logging
+import responses
+from dotenv import load_dotenv
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, CallbackContext
 from scraper_other import get_quote,top_10_games_of_all_times,top_10_latest_games,get_random_joke,get_5_books,get_5_novels,get_product
 from movies_tv_scraper import top_action_movies, top_comedy_movies, top_horror_movies,top_10_rated_movies,top_action_tv_shows,top_comedy_tv_shows,top_horror_tv_shows,top_10_rated_tv_shows
-# from keep_alive import keep_alive
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-import responses
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, CallbackContext
-from dotenv import load_dotenv
 
 # Getiing bot token from env file
 load_dotenv()
@@ -34,15 +33,23 @@ def start(update, context):
 # To Do Functionality ... Malik
 def cmd(update, context):
     update.message.reply_text(
-        '/tldr - TLDR tech news\n/devto-Devto todays popular artical\n/quotes - Random quotest')
+        '/start - Description on how to get started\n/quotes recieve a random quote\n/movie - choose a movie genre and recive a list of movies\n/tvshow - choose a tvshow genre and recive a list of shows\n/book - choose a book genre and recive a list of book\n/joke - Recive a random joke\n/game - Recive the top 10 games of your choice\n/product - Look up a product on the Internet\n/help - Ask for help\n/cmd - A list of all commands\n/socials - The link for Our Github')
 def socials(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text="This is our organizations Git Repo:\n {Github} https://github.com/JAD-Bot-Team/JAD\n\n ")
-
-
-def source_code(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id,
-                             text="This is our organizations Git Repo:\n {Github} https://github.com/JAD-Bot-Team/JAD\n\n ")
+    '''
+    start - Description
+    quotes - get a random quote
+    movie - Suggest a movie
+    tvshow - Suggest a tv show
+    book - Suggest a book
+    joke - tell a joke
+    product - Search for a product
+    game - Search for a game
+    help - Get help
+    cmd - Commands
+    socials - socials
+    '''
 
 
 def handle_message(update, context):
@@ -271,22 +278,19 @@ if __name__ == '__main__':
 
     dp.add_handler(CommandHandler('socials', socials))
 
-    dp.add_handler(CommandHandler('source_code', source_code))
-
     dp.add_handler(CommandHandler('quotes', quote))
-    # tldr handler
+
     dp.add_handler(CommandHandler('movie', movie))
-    # Dev To
+
     dp.add_handler(CommandHandler('tvshow', tv_show))
-    # Medium
+
     dp.add_handler(CommandHandler('book', book))
-    # Tech Crunch Articles
+
     dp.add_handler(CommandHandler('joke', joke))
-    # Hacker News
+
     dp.add_handler(CommandHandler('product', product))
     
     dp.add_handler(CommandHandler('game', game))
-
     # Messages
     dp.add_handler(MessageHandler(Filters.text, handle_message))
 
@@ -296,7 +300,6 @@ if __name__ == '__main__':
     # Log all errors
     dp.add_error_handler(error)
 
-    # keep_alive()
     # Run the bot
     updater.start_polling(1.0)
     # Idle state give bot time to go in idle

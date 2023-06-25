@@ -1,6 +1,4 @@
-import os
 import json
-import datetime
 import requests
 from bs4 import BeautifulSoup
 import random
@@ -275,22 +273,3 @@ def get_random_joke():
     # Return a random joke from the list
     return random.choice(jokes)
 # print(get_random_joke())
-def get_5_books():
-    book1= "book1"
-    book2= "book2"
-    book3= "book3"
-    book4= "book4"
-    book5= "book5"
-    return (book1,book2,book3,book4,book5)
-
-def get_5_novels():
-    book1= "book1"
-    book2= "book2"
-    book3= "book3"
-    book4= "book4"
-    book5= "book5"
-    return (book1,book2,book3,book4,book5)
-
-def get_product():
-    product = "product"
-    return (product)

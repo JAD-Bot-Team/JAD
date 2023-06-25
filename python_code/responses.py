@@ -31,7 +31,6 @@ def get_response(message):
         # new
         Bot_Response(message, ['how', 'you', 'created'],
                      'I was created by using python and got deployed on Herkou'),
-
         # Name
         Bot_Response(message, ['your', 'name'],
                      'My name is Rohan\'s Bot, nice to meet you!'),

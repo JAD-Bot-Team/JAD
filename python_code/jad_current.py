@@ -6,14 +6,26 @@ from scraper_amazon import get_product_amazon
 from scraper_product import get_product_newegg
 from scraper_book import get_5_books
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram import Voice
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, CallbackContext
-from scraper_other import get_quote,top_10_games_of_all_times,top_10_latest_games,get_random_joke
-from movies_tv_scraper import top_action_movies, top_comedy_movies, top_horror_movies,top_10_rated_movies,top_action_tv_shows,top_comedy_tv_shows,top_horror_tv_shows,top_10_rated_tv_shows
+from scraper_other import get_quote, top_10_games_of_all_times, top_10_latest_games, get_random_joke
+from movies_tv_scraper import (
+    top_action_movies,
+    top_comedy_movies,
+    top_horror_movies,
+    top_10_rated_movies,
+    top_action_tv_shows,
+    top_comedy_tv_shows,
+    top_horror_tv_shows,
+    top_10_rated_tv_shows,
+)
+import speech_recognition as sr
+from pydub import AudioSegment
+import pyttsx3
 
 # Getiing bot token from env file
 load_dotenv()
 Bot_Token = os.getenv('TELEGRAM_KEY')
-
 
 '''
 💡Use this version if you deploying it on repl.it
@@ -22,37 +34,75 @@ Add the bot token in secretes section
   Bot_Token = os.environ['Bot_Token']
 '''
 
-
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
+)
 logging.info('Starting Bot...')
 
-def handle_message(update, context):
-    text = str(update.message.text).lower()
-    logging.info(f'User ({update.message.chat.id}) says: {text}')
+
+def voice_processing(update: Update, context: CallbackContext):
+    file_id = update.message.voice.file_id
+    file = context.bot.get_file(file_id)
+    file.download('voice_message.ogg')
+
+    convert_ogg_to_wav('voice_message.ogg', 'voice_message.wav')
+    text = convert_speech_to_text('voice_message.wav')
+    if text:
+        handle_message(update, context, text)
+    else:
+        update.message.reply_text("Sorry, I couldn't convert the voice message to text.")
+
+
+    convert_ogg_to_wav('voice_message.ogg', 'voice_message.wav')
+    text = convert_speech_to_text('voice_message.wav')
+    if not text:
+        update.message.reply_text("Sorry, I couldn't convert the voice message to text.")
     
+
+
+def convert_ogg_to_wav(ogg_filename, wav_filename):
+    sound = AudioSegment.from_ogg(ogg_filename)
+    sound.export(wav_filename, format="wav")
+
+
+def convert_speech_to_text(filename):
+    r = sr.Recognizer()
+    with sr.AudioFile(filename) as source:
+        audio_data = r.record(source)
+        try:
+            text = r.recognize_google(audio_data)
+            return text.lower()
+        except sr.UnknownValueError:
+            return None
+
+
+def handle_message(update, context, text=None):
+    if text is None:
+        text = str(update.message.text).lower()
+    logging.info(f'User ({update.message.chat.id}) says: {text}')
+
     if "newegg-" in text:
         products = get_product_newegg(text)
         for product in products:
             update.message.reply_text(product)
         return
-    
+
     if "amazon-" in text:
         products = get_product_amazon(text)
         for product in products:
             update.message.reply_text(product)
         return
-    
+
     if "book-" in text:
         products = get_5_books(text)
         for product in products:
             update.message.reply_text(product)
         return
 
-    # Bot response
     response = responses.get_response(text)
     update.message.reply_text(response)
 
-
+    
 # We defined this fuction to use as commands
 # all update.message are reply from bots to user
 def start(update, context):
@@ -187,7 +237,8 @@ def error(update, context):
 
 # Run the programms from here
 if __name__ == '__main__':
-    updater = Updater(Bot_Token, use_context=True)
+    
+    updater = Updater(token=Bot_Token, use_context=True)
     dp = updater.dispatcher
     # Commands handler which callback our commands when user ask for it
     dp.add_handler(CommandHandler('start', start))
@@ -211,6 +262,8 @@ if __name__ == '__main__':
     dp.add_handler(CommandHandler('game', game))
     # Messages
     dp.add_handler(MessageHandler(Filters.text, handle_message))
+    
+    dp.add_handler(MessageHandler(Filters.voice, voice_processing))
     # CallbackQueryHandler
     dp.add_handler(CallbackQueryHandler(button))
     # Log all errors

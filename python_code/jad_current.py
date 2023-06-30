@@ -3,9 +3,10 @@ import logging
 import responses
 from dotenv import load_dotenv
 from scraper_amazon import get_product_amazon
-from scraper_product import get_product_newegg
+from scraper_product import get_product_newegg, get_product_dna
 from scraper_book import get_5_books
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from scraper_cinemas import get_trending_in_cinemas_jordan
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, Voice
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, CallbackContext
 from scraper_other import get_quote,top_10_games_of_all_times,top_10_latest_games,get_random_joke
 from movies_tv_scraper import top_action_movies, top_comedy_movies, top_horror_movies,top_10_rated_movies,top_action_tv_shows,top_comedy_tv_shows,top_horror_tv_shows,top_10_rated_tv_shows
@@ -30,6 +31,9 @@ def handle_message(update, context):
     text = str(update.message.text).lower()
     logging.info(f'User ({update.message.chat.id}) says: {text}')
     
+    if " -" in text:
+        update.message.reply_text("Please make sure to not leave a space between the command and the dash, use this format (Example- What to search for).")
+        return
     if "newegg-" in text:
         products = get_product_newegg(text)
         for product in products:
@@ -40,10 +44,17 @@ def handle_message(update, context):
         products = get_product_amazon(text)
         for product in products:
             update.message.reply_text(product)
+        # update.message.reply_text(best_product)  
         return
     
     if "book-" in text:
         products = get_5_books(text)
+        for product in products:
+            update.message.reply_text(product)
+        return
+    
+    if "dna-" in text:
+        products = get_product_dna(text)
         for product in products:
             update.message.reply_text(product)
         return
@@ -52,6 +63,17 @@ def handle_message(update, context):
     response = responses.get_response(text)
     update.message.reply_text(response)
 
+def handle_voice_message(update, context):
+    voice = update.message.voice
+    
+    # Extract necessary information from the voice message
+    file_id = voice.file_id
+    duration = voice.duration
+    
+    # Reply with a string
+    reply_text = f"Received a voice message with file ID: {file_id} and duration: {duration} seconds"
+    update.message.reply_text(reply_text)
+# ...
 
 # We defined this fuction to use as commands
 # all update.message are reply from bots to user
@@ -61,8 +83,20 @@ def start(update, context):
 
 def cmd(update, context):
     update.message.reply_text(
-        '/start - Description on how to get started\n/quotes recieve a random quote\n/movie - choose a movie genre and recive a list of movies\n/tvshow - choose a tvshow genre and recive a list of shows\n/book - choose a book genre and recive a list of book\n/joke - Recive a random joke\n/game - Recive the top 10 games of your choice\n/product - Look up a product on the Internet\n/help - Ask for help\n/cmd - A list of all commands\n/socials - The link for Our Github')
-    
+        '/start - Description on how to get started\n'
+        '/quotes - Receive a random quote\n'
+        '/cinema - Trending movies in Jordanian cinemas\n'
+        '/movie - Choose a movie genre and receive a list of movies\n'
+        '/tvshow - Choose a TV show genre and receive a list of shows\n'
+        '/book - Choose a book genre and receive a list of books\n'
+        '/joke - Receive a random joke\n'
+        '/game - Receive the top 10 games of your choice\n'
+        '/product - Look up a product on the Internet\n'
+        '/help - Ask for help\n'
+        '/cmd - A list of all commands\n'
+        '/socials - The link for our GitHub'
+    )
+
 def socials(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text="This is our organizations Git Repo:\n {Github} https://github.com/JAD-Bot-Team/JAD\n\n ")
@@ -80,6 +114,11 @@ def quote(update, context):
 def joke(update, context):
     random_joke = get_random_joke()
     update.message.reply_text(random_joke)
+    
+def cinema(update, context):
+    trending_movies = get_trending_in_cinemas_jordan()
+    for movie in trending_movies:
+        update.message.reply_text(movie)
 
 # movies
 def movie(update, context):
@@ -191,7 +230,7 @@ if __name__ == '__main__':
     dp = updater.dispatcher
     # Commands handler which callback our commands when user ask for it
     dp.add_handler(CommandHandler('start', start))
-
+    
     dp.add_handler(CommandHandler('help', help))
 
     dp.add_handler(CommandHandler('cmd', cmd))
@@ -208,9 +247,13 @@ if __name__ == '__main__':
 
     dp.add_handler(CommandHandler('product', product))
     
+    dp.add_handler(CommandHandler('cinema', cinema))
+    
     dp.add_handler(CommandHandler('game', game))
     # Messages
     dp.add_handler(MessageHandler(Filters.text, handle_message))
+    # Voices
+    dp.add_handler(MessageHandler(Filters.voice, handle_voice_message))
     # CallbackQueryHandler
     dp.add_handler(CallbackQueryHandler(button))
     # Log all errors

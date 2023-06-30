@@ -495,10 +495,52 @@ def top_10_rated_tv_shows():
     print("Sent top 10 rated tv shows 🚀")
     return top_ten_movies
 
-# Call the function to scrape movie details and get the top five movies as separate strings
-# top_five_movies_list = top_Action_movies()
 
-# Print each movie as a separate string
-# for movie_str in top_five_movies_list:
-#     print(movie_str)
-#     print("-----------")
+
+# def search_imdb(query):
+#     url = f"https://www.imdb.com/find/?q={query}&ref_=nv_sr_sm"
+
+#     # Add a user-agent header to the request
+#     headers = {
+#         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+#     }
+#     response = requests.get(url, headers=headers)
+
+#     # Create a BeautifulSoup object to parse the HTML content
+#     soup = BeautifulSoup(response.content, "html.parser")
+
+#     # Find all the movie titles within <td> tags and class "titleColumn"
+#     movie_titles = soup.find_all("td", class_="titleColumn")
+
+#     # Initialize a list to store movie details
+#     movies = []
+
+#     # Extract the details for each movie
+#     for title in movie_titles[:10]:
+#         movie = {}
+
+#         # Get the movie title
+#         movie['title'] = title.a.text.strip()
+
+#         # Get the IMDb link for the movie
+#         movie['link'] = "https://www.imdb.com" + title.a['href']
+
+#         # Get the movie rating
+#         rating = title.find_next("td", class_="ratingColumn imdbRating")
+#         movie['rating'] = rating.text.strip()
+
+#         # Add the movie details to the list
+#         movies.append(movie)
+
+#     # Return the top ten movies as separate strings
+#     top_ten_movies = []
+#     for movie in movies:
+#         movie_str = ""
+#         movie_str += f"Title: {movie['title']}\n"
+#         movie_str += f"IMDb Link: {movie['link']}\n"
+#         movie_str += f"Rating: {movie['rating']}\n"
+#         top_ten_movies.append(movie_str)
+#     # print("Sent top 10 rated tv shows \U0001F680")  # Emoji printed using Unicode escape sequence
+#     return top_ten_movies
+
+# print(search_imdb("breakingbad"))

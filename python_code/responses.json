@@ -1,207 +1,351 @@
+
 [
-    {
-      "triggers": ["hello", "hi", "hey","hii","hello there","hallo","yo"],
-      "response": "Hello there, I am JAD a chatBot you can talk to, and i can help you with some recommendation for that PRESS on menu button"
-    },
-    {
-      "triggers": ["jad"],
-      "response": "That's my name, I am jad, what can i do for you ?"
-    },
-    {
-      "triggers": ["bye", "goodbye" , "see you later", "talk to you later" , "be right back" , "i have to go" ],
-      "response": "Please don't go!"
-    },
-    {
-      "triggers": ["thanks" , "thank you", "owe you one" , "That's very kind of you" , "Thank you so much" , "appreciate it" ],
-      "response": "Oh don't worry about it"
-    },
-    {
-      "triggers": ["cmd", "type cmd"],
-      "response": "Click me /list"
-    },
-    {
-      "triggers": ["that's cute", "that's lovely" , "that's adorable" , "very nice" , "it is beautiful" , "it's fantastic" , "it's fabulous"],
-      "response": "Yeah it is beatiful"
-    },
-    {
-      "triggers": ["who created?" , "By whom were you created?","who made you ?",
-      "Who is responsible for your creation?",
-      "Who brought you into existence?",
-      "Who is the creator behind you?"
-      ],
-      "response": "I have been created by smart devs from LTUC, they call themselves (Tech Titans)"
-    },
-    {
-      "triggers": ["finding a job ?" , "seeking for job" , "find job",  "i want job"  , "find me a job" ],
-      "response": "If you are looking for a job, I can assist you in finding a suitable job by suggesting you to visit the LinkedIn website, where you can explore various opportunities./n LINK :[here] (https://www.linkedin.com/feed/) "
-    },
-    {
-      "triggers": ["good morning" , "gd morning" , "Gmorning" , "morning" ,"wake up" ],
-      "response": "Early mornings is the best, Good morning beatiful"
-    },
-    {
-      "triggers": ["good night" , "gd night" , "Gnight" , "nighty" , "sleep" ],
-      "response": "Sweet dreams dear, Good night"
-    },
-    {
-      "triggers": ["i play football" , " i play basketball" , "i play golf" , "guitar" , "i like to swim" , "swimming" , "chess" ,
-      "hoppy" , "tennis" , "billiard" , "bing bong" , "hiking" ],
-      "response": "Thats sounds cool, it's great to have a hoppy and enjoy it"
-    },
-    {
-      "triggers": ["Travel" , "sea", "ocean" , "countries" , "torisum" , "trip",
-      "wander", "journey","cruise","traveler","tourism","adventure","tourist","tour","traveller",
-      "vacation" , "flight","fly","passport",
-      "visa","hotel"," transport","tourists"," exploration"," flights","airline","visit other country",
-      "see world","camp","booking"," adventure travel","go around"," moving","ravel by","transit" ,"nature"
-  ],
-      "response": "Traveling is one of the best activities that can be done, i hope you enjoy your trip"
-    },
-    {
-      "triggers": ["How are you?",
-      "Hope you are doing well?",
-      "how about you?",
-      "everything is okay?",
-    "how is everything?"],
-      "response": "I am fine how about you ?"
-    },
-    {
-      "triggers": ["i am fine im fine i'm fine","doing good","fine","i am okay","doing well","i am great" ],
-      "response": "Glad to hear that"
-    },
-    {
-        "triggers": ["happy","very happy","so happy" , "feeling happy happy feeling "],
-        "response": "I hope that you will always be that happy"
-      },
-    {
-      "triggers": ["What is your name?",
-      "What could I call you?",
-      "call you?",
-      "Who are you?",
-      "Tell me your name?",
-      "tell me about yourself"],
-      "response":  "I am JAD, the smartest chatBot ever *_^"
-    },
-    { 
-      "triggers": ["old are you?", "When were you created?", "What's your age?"],
-      "response": "I don't have an age as I am an artificial intelligence program created in 2023."
-    },
-    {
-      "triggers": ["the meaning of life?",
-                   
-                
-                   "Why do we exist?",
-                  "what is life?"],
-      "response": "The meaning of life can be subjective and different for each individual. It's a question that has puzzled humans for centuries."
-    },
-    {
-      "triggers": ["What's the weather like today?",
-                   "How's the weather outside?",
-                   "Do I need an umbrella?",
-                   
-                   "weather"],
-      "response": "I'm sorry, I don't have real-time access to weather information. You can check a weather website or app for accurate updates.[here](https://www.google.com/search?q=weather&rlz=1C1CHZN_enJO1045JO1045&oq=weather&aqs=chrome..69i57j0i433i512j0i433i457i512j0i402i512j0i512j0i433i512l2j0i512l2j0i131i433i512.1294j1j4&sourceid=chrome&ie=UTF-8)"
-    },
-    {
-      "triggers": ["your hobbies?",
-                   "any interests?",
-                   "your free time?"],
-      "response": "As an AI, I don't have personal hobbies or interests, but I enjoy assisting and providing information to users like you!"
-    },
-    {
-      "triggers": [" fun fact",
-                   "Share an interesting fact",
-                   "Give me a random fact", 
-                  "fact"],
-      "response": "The shortest war in history lasted only 38 to 45 minutes, known as the Anglo-Zanzibar War in 1896"
-    },
-    {
-      "triggers": ["i need help in programming",
-                  "I need assistance with coding",
-                  "programming",
-                  "coding",
-                  "code?",
-                  "how to code?"
-            ],
-      "response": "actually i can't, but i can provide you some dev comunities and resources : [stack overflow](https://stackoverflow.com/) , [geeks for geeks](https://www.geeksforgeeks.org/) [Dev comunity](https://dev.to/)"
-    },
-    {
-      "triggers": ["have any pets?",
-                   "your favorite animal",
-              "do you have pet?"],
-      "response": "As an AI, I don't have physical form or preferences for pets. However, I find various animals fascinating and enjoy learning about them."
-    },
-    {
-      "triggers": ["cat name", "name for my cat", "naming a cat"],
-      "response": "Sure, I can help you with that! Here are some cat name recommendations:\n1. Whiskers\n2. Luna\n3. Simba\n4. Bella\n5. Oliver\n6. Lily\n7. Max\n8. Lucy\n9. Charlie\n10. Mia"
-    },
-    {
-      "triggers": ["dog name", "name for my dog", "naming a dog"],
-      "response": "Sure, I can help you with that! Here are some dog name recommendations:\n1. Max\n2. Rex\n3. Tyson\n4. Wals\n5. Cooper\n6. Rocky\n7. Ricky\n8. Sor\n9. Niko\n10. Shooper"
-    },
-    {
-      "triggers": [
-        "what do?",
-        "help",
-        "what  help me with?",
-        "things can help with",
-        "assist me today?",
-        "help me?"
-      ],
-      "response": "I'm here to help you in various ways. Just let me know what you need assistance with, and I'll do my best to provide the information or support you're looking for."
-    },
-    {
-      "triggers": ["i just wanna talk" , "can we chat ?" , "i wanna talk to you" , "can we just chat ?"],
-      "response": "Sure my dear, you can talk to me whenever you want, what do you want to talk about?"
-    },
-    {
-      "triggers": ["upset " ,"  not happy not feeling not happy not", "sad " , "down", " blue", "low","bad" ,
-       "having a rough day", "going through a tough time","not doing good"],
-      "response": "Oh my god, what happened ? Tell me i am listening"
-    },
-    {
-      "triggers": ["forget about it" , "it's okay it's nothing" , "don't worry fine","not ok","not okay"],
-      "response": "I hope you will be fine soon, and i am here anytime to help"
-    },
-    {
-      "triggers": ["alright" , "okay", "ok","k","not a problem"],
-      "response": "Ok dude"
-    },
-    {
-      "triggers": ["i will check it" , "see it" , "check","i will see","let me see", "let me check the link","link","see link","open link"],
-      "response": "Alright, and let me know if you want anything else"
-    },
-    {
-      "triggers": ["i have to go" , "i have to" , "i must go", "i should go" ],
-      "response": "I am gonna miss you, talk to me whenever you can, take care <3"
-    },
-    {
-      "triggers": ["love cats?" , "cat love","like cats" ],
-      "response": "I find them as an intersting creatures, so yeah i love cats do you have one?"
-    },
-    {
-      "triggers": [ "have cat" ],
-      "response": "That's very cute, treat the cat well darling, they need attention"
-    },
-    {
-      "triggers": ["i will", "of course","sure" ,"i treat "],
-      "response": "That's nice of you"
-    },
-    {
-        "triggers": ["im movie", "find me a movie","movie suggest movie", "find movie","movie" ],
-        "response": "If you are looking for a movie i can help you with that, just PRESS movie-(movie name), Or you can use the menu on the left bar"
-      },
-      {
-        "triggers": ["series" ,"tv show", "tv","series suggest series","suggest tv show","find tv-show" , "find series","tv-show","suggest tv"],
-        "response": "If you are looking for a TV-show i can help you with that, just PRESS Tv-shows-(series name), Or you can use the menu on the left bar"
-      },
-      {
-        "triggers": ["book", "find book","book suggest book"],
-        "response": "If you are looking for a book i can help you with that, just PRESS book-(book name), Or you can use the menu on the left bar"
-      },
-      {
-        "triggers": ["product", "find product","product suggest product"],
-        "response": "If you are looking for a product i can help you with that, just PRESS amazon-(product name)"
-      }
-    
+  {
+    "triggers": ["hello", "hi", "hey"],
+    "response": "Hello there! I am JAD, a chatbot ready to assist you."
+  },
+  {
+    "triggers": ["what's your name?", "who are you?"],
+    "response": "I am JAD, your friendly chatbot."
+  },
+  {
+    "triggers": ["how are you?", "how are you doing?"],
+    "response": "I'm an AI, so I don't have feelings, but I'm here to help you."
+  },
+  {
+    "triggers": ["tell me a joke", "say something funny"],
+    "response": "Why don't scientists trust atoms? Because they make up everything!"
+  },
+  {
+    "triggers": ["how old are you?", "when were you created?"],
+    "response": "I don't have an age as I am an artificial intelligence program."
+  },
+  {
+    "triggers": ["what can you do?", "what are your capabilities?"],
+    "response": "I can provide information, answer questions, and have conversations with you."
+  },
+  {
+    "triggers": ["tell me a fun fact", "share an interesting fact"],
+    "response": "The world's smallest mammal is the bumblebee bat. It weighs about the same as a penny!"
+  },
+  {
+    "triggers": ["where are you from?", "where were you created?"],
+    "response": "I was created by a team of developers at LTUC in Jordan."
+  },
+  {
+    "triggers": ["how can you help me?", "what services do you offer?"],
+    "response": "I can assist you with various tasks, provide recommendations, and answer your questions."
+  },
+  {
+    "triggers": ["what's the weather like today?", "should I take an umbrella?"],
+    "response": "I'm sorry, I don't have real-time access to weather information. You can check a weather website or app for accurate updates."
+  },
+  {
+    "triggers": ["recommend a movie", "suggest a film to watch"],
+    "response": "Sure! What genre of movies do you prefer?"
+  },
+  {
+    "triggers": ["find me a restaurant", "recommend a place to eat"],
+    "response": "Certainly! Can you please provide me with your location or preferred cuisine?"
+  },
+  {
+    "triggers": ["help me with programming", "assist with coding"],
+    "response": "I can provide resources and answer questions related to programming. What specific help do you need?"
+  },
+  {
+    "triggers": ["tell me a story", "share a short story"],
+    "response": "Once upon a time, in a land far away, there lived a wise old owl..."
+  },
+  {
+    "triggers": ["do you have any hobbies?", "what do you do in your free time?"],
+    "response": "As an AI, I don't have personal hobbies, but I enjoy helping and interacting with users like you!"
+  },
+  {
+    "triggers": ["recommend a book", "suggest a good read"],
+    "response": "Of course! What genre or type of book are you interested in?"
+  },
+  {
+    "triggers": ["what's your favorite color?", "do you have a favorite color?"],
+    "response": "As an AI, I don't have preferences or the ability to perceive colors."
+  },
+  {
+    "triggers": ["can we be friends?", "do you want to be friends?"],
+    "response": "Certainly! I'm always here to chat and assist you."
+  },
+  {
+    "triggers": ["how do I contact support?", "need help from a human"],
+    "response": "You can contact our support team at support@jadchatbot.com for further assistance."
+  },
+  {
+    "triggers": ["tell me about yourself", "who created you?"],
+    "response": "I am an AI chatbot called JAD. I was created by a team of developers to provide assistance and have conversations with users like you."
+  },
+  {
+    "triggers": ["what's the meaning of life?", "why are we here?"],
+    "response": "The meaning of life can vary for each person. It's a deep philosophical question that has different interpretations and perspectives."
+  },
+  {
+    "triggers": ["what's your favorite movie?", "do you like watching films?"],
+    "response": "As an AI, I don't have personal preferences or the ability to watch movies."
+  },
+  {
+    "triggers": ["tell me a random fact", "share a fact"],
+    "response": "The world's oldest known recipe is a beer recipe from ancient Sumer, dating back to around 1800 BC."
+  },
+  {
+    "triggers": ["what's your favorite food?", "do you like to eat?"],
+    "response": "As an AI, I don't have physical senses, so I don't have a favorite food or the ability to eat."
+  },
+  {
+    "triggers": ["what's your favorite song?", "do you like music?"],
+    "response": "As an AI, I don't have personal preferences or the ability to listen to music."
+  },
+  {
+    "triggers": ["tell me a riddle", "challenge me with a riddle"],
+    "response": "I have keys but no locks. I have space but no room. You can enter but can't go outside. What am I? (Answer: A keyboard)"
+  },
+  {
+    "triggers": ["do you dream?", "can you sleep?"],
+    "response": "As an AI, I don't have consciousness or the ability to sleep, so I don't dream."
+  },
+  {
+    "triggers": ["tell me a motivational quote", "inspire me with a quote"],
+    "response": "Success is not final, failure is not fatal: It is the courage to continue that counts. - Winston Churchill"
+  },
+  {
+    "triggers": ["what's the capital of France?", "tell me a country's capital"],
+    "response": "The capital of France is Paris."
+  },
+  {
+    "triggers": ["what's your favorite sport?", "do you like sports?"],
+    "response": "As an AI, I don't have personal preferences or the ability to engage in physical activities."
+  },
+  {
+    "triggers": ["what's the current time?", "tell me the time"],
+    "response": "The current time is 3:00 PM."
+  },
+  {
+    "triggers": ["what's the largest country in the world?", "tell me about country sizes"],
+    "response": "The largest country in the world by land area is Russia."
+  },
+  {
+    "triggers": ["tell me a science fact", "share a scientific fact"],
+    "response": "Astronauts cannot cry in space due to the lack of gravity pulling tears downward."
+  },
+  {
+    "triggers": ["what's your favorite animal?", "do you like animals?"],
+    "response": "As an AI, I don't have personal preferences or the ability to have favorites."
+  },
+  {
+    "triggers": ["how can I learn a new language?", "give me language learning tips"],
+    "response": "Consistent practice, immersion, and using language learning apps or courses can be helpful in learning a new language."
+  },
+  {
+    "triggers": ["what's the meaning of love?", "define love"],
+    "response": "Love is a complex and multifaceted emotion that can vary in meaning depending on individual experiences and cultural contexts."
+  },
+  {
+    "triggers": ["tell me a historical fact", "share a history fact"],
+    "response": "The Great Wall of China is the longest man-made structure in the world, stretching over 13,000 miles."
+  },
+  {
+    "triggers": ["how do I improve my productivity?", "give me productivity tips"],
+    "response": "Some productivity tips include setting clear goals, prioritizing tasks, minimizing distractions, and taking regular breaks."
+  },
+  {
+    "triggers": ["what's your favorite book?", "do you like reading?"],
+    "response": "As an AI, I don't have personal preferences or the ability to read books."
+  },
+  {
+    "triggers": ["what's the square root of 144?", "calculate the square root"],
+    "response": "The square root of 144 is 12."
+  },
+  {
+    "triggers": ["what's the population of China?", "tell me a country's population"],
+    "response": "As of the latest estimates, the population of China is approximately 1.4 billion."
+  },
+  {
+    "triggers": ["tell me a fascinating fact", "share an intriguing fact"],
+    "response": "The world's oceans contain nearly 20 million tons of gold dissolved in their waters."
+  },
+  {
+    "triggers": ["what's your favorite subject?", "do you like studying?"],
+    "response": "As an AI, I don't have personal preferences or the ability to study."
+  },
+  {
+    "triggers": ["what's the distance from Earth to the Moon?", "tell me about celestial distances"],
+    "response": "The average distance from Earth to the Moon is about 238,855 miles (384,400 kilometers)."
+  },
+  {
+    "triggers": ["tell me a famous quote", "share a well-known quote"],
+    "response": "The only way to do great work is to love what you do. - Steve Jobs"
+  },
+  {
+    "triggers": ["what's your favorite hobby?", "do you have any hobbies?"],
+    "response": "As an AI, I don't have personal hobbies, but I enjoy assisting and interacting with users like you!"
+  },
+  {
+    "triggers": ["what's the largest ocean?", "tell me about the world's oceans"],
+    "response": "The largest ocean in the world is the Pacific Ocean."
+  },
+  {
+    "triggers": ["what's the meaning of happiness?", "define happiness"],
+    "response": "Happiness is a subjective state of well-being and contentment that can vary from person to person."
+  },
+  {
+    "triggers": ["what's your favorite game?", "do you like playing games?"],
+    "response": "As an AI, I don't have personal preferences or the ability to play games."
+  },
+  {
+    "triggers": ["what's the capital of Australia?", "tell me a country's capital"],
+    "response": "The capital of Australia is Canberra."
+  },
+  {
+    "triggers": ["tell me a space fact", "share an astronomy fact"],
+    "response": "The Sun is so large that approximately 1.3 million Earths could fit inside it."
+  },
+  {
+    "triggers": ["how do I stay motivated?", "give me motivation tips"],
+    "response": "Some motivation tips include setting goals, finding inspiration, maintaining a positive mindset, and rewarding yourself for progress."
+  },
+  {
+    "triggers": ["what's the meaning of success?", "define success"],
+    "response": "Success is the achievement of a desired outcome, goal, or objective."
+  },
+  {
+    "triggers": ["tell me a famous person's quote", "share a quote from a celebrity"],
+    "response": "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful. - Albert Schweitzer"
+  },
+  {
+    "triggers": ["how do I stay healthy?", "give me health tips"],
+    "response": "Maintaining a balanced diet, staying physically active, getting enough sleep, and managing stress are some important aspects of staying healthy."
+  },
+  {
+    "triggers": ["what's the capital of Brazil?", "tell me a country's capital"],
+    "response": "The capital of Brazil is Brasília."
+  },
+  {
+    "triggers": ["tell me a nature fact", "share an interesting fact about nature"],
+    "response": "The Amazon Rainforest is home to approximately 40,000 plant species, making it one of the most biodiverse places on Earth."
+  },
+  {
+    "triggers": ["how do I overcome procrastination?", "give me tips to beat procrastination"],
+    "response": "Breaking tasks into smaller, manageable steps, setting deadlines, and eliminating distractions can help overcome procrastination."
+  },
+  {
+    "triggers": ["what's the meaning of friendship?", "define friendship"],
+    "response": "Friendship is a close and supportive relationship between two or more individuals based on mutual trust, respect, and affection."
+  },
+  {
+    "triggers": ["tell me a famous movie quote", "share a quote from a film"],
+    "response": "May the Force be with you. - Star Wars"
+  },
+  {
+    "triggers": ["how do I improve my public speaking skills?", "give me tips for public speaking"],
+    "response": "Practicing, preparing thoroughly, focusing on body language, and engaging with the audience can help improve public speaking skills."
+  },
+  {
+    "triggers": ["what's the capital of Canada?", "tell me a country's capital"],
+    "response": "The capital of Canada is Ottawa."
+  },
+  {
+    "triggers": ["tell me a technology fact", "share an interesting fact about technology"],
+    "response": "The first computer mouse was invented by Douglas Engelbart in 1964 and was made of wood."
+  },
+  {
+    "triggers": ["how do I stay focused?", "give me concentration tips"],
+    "response": "Creating a conducive environment, minimizing distractions, setting clear goals, and practicing mindfulness can help improve focus and concentration."
+  },
+  {
+    "triggers": ["what's the meaning of creativity?", "define creativity"],
+    "response": "Creativity is the ability to generate unique and original ideas, concepts, or expressions."
+  },
+  {
+    "triggers": ["tell me a famous artist's quote", "share a quote from an artist"],
+    "response": "Every artist was first an amateur. - Ralph Waldo Emerson"
+  },
+  {
+    "triggers": ["how do I start a blog?", "give me blogging tips"],
+    "response": "Identifying a niche, choosing a platform, creating valuable content, and promoting your blog are key steps to start a successful blog."
+  },
+  {
+    "triggers": ["what's the capital of Germany?", "tell me a country's capital"],
+    "response": "The capital of Germany is Berlin."
+  },
+  {
+    "triggers": ["tell me a science fiction fact", "share a sci-fi fact"],
+    "response": "The concept of a time machine was popularized by H.G. Wells in his novel 'The Time Machine,' published in 1895."
+  },
+  {
+    "triggers": ["how do I manage my time effectively?", "give me time management tips"],
+    "response": "Setting priorities, creating a schedule, avoiding multitasking, and taking breaks can help improve time management skills."
+  },
+  {
+    "triggers": ["what's the meaning of success?", "define success"],
+    "response": "Success is the achievement of a desired outcome, goal, or objective."
+  },
+  {
+    "triggers": ["tell me a famous sports quote", "share a quote from an athlete"],
+    "response": "Hard work beats talent when talent doesn't work hard. - Tim Notke"
+  },
+  {
+    "triggers": ["how do I overcome writer's block?", "give me tips for dealing with writer's block"],
+    "response": "Taking breaks, changing the environment, brainstorming, and freewriting can help overcome writer's block and stimulate creativity."
+  },
+  {
+    "triggers": ["what's the capital of Japan?", "tell me a country's capital"],
+    "response": "The capital of Japan is Tokyo."
+  },
+  {
+    "triggers": ["tell me a fascinating historical event", "share an intriguing historical fact"],
+    "response": "The Apollo 11 moon landing in 1969 was a significant historical event that marked the first time humans set foot on the moon."
+  },
+  {
+    "triggers": ["how do I improve my communication skills?", "give me tips for better communication"],
+    "response": "Active listening, being clear and concise, using nonverbal cues, and practicing empathy can improve communication skills."
+  },
+  {
+    "triggers": ["what's the meaning of art?", "define art"],
+    "response": "Art is the expression or application of human creative skill and imagination, typically in visual forms such as painting, sculpture, or music."
+  },
+  {
+    "triggers": ["tell me a famous musician's quote", "share a quote from a musician"],
+    "response": "Without music, life would be a mistake. - Friedrich Nietzsche"
+  },
+  {
+    "triggers": ["how do I develop a growth mindset?", "give me tips for cultivating a growth mindset"],
+    "response": "Embracing challenges, learning from failures, seeking feedback, and believing in the power of effort can help develop a growth mindset."
+  },
+  {
+    "triggers": ["what's the capital of India?", "tell me a country's capital"],
+    "response": "The capital of India is New Delhi."
+  },
+  {
+    "triggers": ["tell me a fascinating scientific discovery", "share an intriguing scientific fact"],
+    "response": "The discovery of penicillin by Alexander Fleming in 1928 revolutionized medicine and paved the way for the development of antibiotics."
+  },
+  {
+    "triggers": ["how do I develop my leadership skills?", "give me tips for becoming a better leader"],
+    "response": "Setting a positive example, building effective communication, fostering teamwork, and seeking continuous learning can help develop leadership skills."
+  },
+  {
+    "triggers": ["what's the meaning of education?", "define education"],
+    "response": "Education is the process of acquiring knowledge, skills, values, or attitudes through various forms of learning, such as schooling or self-study."
+  },
+  {
+    "triggers": ["tell me a famous quote about knowledge", "share a quote about knowledge"],
+    "response": "The only true wisdom is in knowing you know nothing. - Socrates"
+  },
+  {
+    "triggers": ["how do I improve my problem-solving skills?", "give me tips for better problem-solving"],
+    "response": "Breaking problems into smaller parts, seeking alternative perspectives, experimenting with solutions, and learning from failures can improve problem-solving skills."
+  },
+  {
+    "triggers": ["what's the capital of the United Kingdom?", "tell me a country's capital"],
+    "response": "The capital of the United Kingdom is London."
+  },
+  {
+    "triggers": ["tell me an interesting fact about the human body", "share a fascinating fact about the human body"],
+    "response": "The human brain is the most energy-consuming organ, accounting for about 20% of the body's total energy consumption."
+  }
 ]

@@ -86,46 +86,79 @@
 #     print('Bot response:', bot_response)
 #     return bot_response
 
+# import json
+# import spacy
+# nlp = spacy.load('en_core_web_md')
+# def calculate_similarity(message, triggers):
+#     message_doc = nlp(message.lower())
+#     trigger_docs = [nlp(trigger.lower()) for trigger in triggers]
+#     similarities = [message_doc.similarity(trigger_doc) for trigger_doc in trigger_docs]
+#     return similarities
+
+
+
+# def get_response(message):
+#     # Load responses from JSON file
+#     with open('responses.json', 'r') as file:
+#         response_data = json.load(file)
+
+#     # Check the response scores and find the best matching response
+#     best_similarity = 0
+#     best_response = None
+#     for data in response_data:
+#         similarities = calculate_similarity(message, data['triggers'])
+#         max_similarity = max(similarities)
+#         if max_similarity > best_similarity:
+#             best_similarity = max_similarity
+#             best_response = data['response']
+
+#         print("Question:", message)
+#         print("Triggers:", data['triggers'])
+#         print("Similarities:", similarities)
+#         print()
+
+#     # Define the threshold similarity score
+#     threshold_similarity = 0.80
+
+#     # Return the matching response or "I didn't understand what you wrote."
+#     if best_similarity >= threshold_similarity:
+#         bot_response = best_response
+#     else:
+#         bot_response = "I didn't understand what you wrote."
+
+#     print('Bot response:', bot_response)
+#     print(max_similarity)
+#     return bot_response
+
+
+
+
 import json
-import spacy
-nlp = spacy.load('en_core_web_md')
-def calculate_similarity(message, triggers):
-    message_doc = nlp(message.lower())
-    trigger_docs = [nlp(trigger.lower()) for trigger in triggers]
-    similarities = [message_doc.similarity(trigger_doc) for trigger_doc in trigger_docs]
-    return similarities
+import difflib
 
+# Load the trigger-response data from responses.json
+def load_responses():
+    with open("responses.json", "r") as file:
+        data = json.load(file)
+    return data
 
+# Get the best matching response based on user input
+def get_response(user_input):
+    data = load_responses()
+    best_ratio = 0
+    best_response = ""
+    
+    for item in data:
+        triggers = item["triggers"]
+        for trigger in triggers:
+            ratio = difflib.SequenceMatcher(None, user_input, trigger).ratio()
+            if ratio > best_ratio:
+                best_ratio = ratio
+                best_response = item["response"]
+    
+    return best_response
 
-def get_response(message):
-    # Load responses from JSON file
-    with open('responses.json', 'r') as file:
-        response_data = json.load(file)
+# Example usage
+# response = get_response("hello")
+# print(response)
 
-    # Check the response scores and find the best matching response
-    best_similarity = 0
-    best_response = None
-    for data in response_data:
-        similarities = calculate_similarity(message, data['triggers'])
-        max_similarity = max(similarities)
-        if max_similarity > best_similarity:
-            best_similarity = max_similarity
-            best_response = data['response']
-
-        print("Question:", message)
-        print("Triggers:", data['triggers'])
-        print("Similarities:", similarities)
-        print()
-
-    # Define the threshold similarity score
-    threshold_similarity = 0.80
-
-    # Return the matching response or "I didn't understand what you wrote."
-    if best_similarity >= threshold_similarity:
-        bot_response = best_response
-    else:
-        bot_response = "I didn't understand what you wrote."
-
-    print('Bot response:', bot_response)
-    print(max_similarity)
-    return bot_response

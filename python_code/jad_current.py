@@ -158,17 +158,6 @@ def game(update, context) -> None:
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text('💡Choose a Category:',reply_markup=reply_markup)
 
-def product(update, context) -> None:
-    """Sends a message with three inline buttons attached."""
-    keyboard = [
-        [
-            InlineKeyboardButton("Amazon", callback_data='product_amazon'),
-            InlineKeyboardButton("Bestbuy", callback_data='product_bestbuy'),
-        ]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text('💡Choose a Category:',reply_markup=reply_markup)
-
 # this function checks for each button pressed after selecting an option from the menu
 
 def button(update: Update, context: CallbackContext) -> None:
@@ -244,8 +233,6 @@ if __name__ == '__main__':
     dp.add_handler(CommandHandler('tvshow', tv_show))
 
     dp.add_handler(CommandHandler('joke', joke))
-
-    dp.add_handler(CommandHandler('product', product))
     
     dp.add_handler(CommandHandler('cinema', cinema))
     

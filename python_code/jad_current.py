@@ -1,32 +1,62 @@
 import os
 import logging
-import responses
+import tempfile
+import pyttsx3
 from dotenv import load_dotenv
-from scraper_amazon import get_product_amazon
-from scraper_product import get_product_newegg, get_product_dna
-from scraper_book import get_5_books
-from scraper_cinemas import get_trending_in_cinemas_jordan
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, Voice
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, CallbackContext
-from scraper_other import get_quote,top_10_games_of_all_times,top_10_latest_games,get_random_joke
-from movies_tv_scraper import top_action_movies, top_comedy_movies, top_horror_movies,top_10_rated_movies,top_action_tv_shows,top_comedy_tv_shows,top_horror_tv_shows,top_10_rated_tv_shows
+from telegram import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Update,
+    Voice,
+)
+from telegram.ext import (
+    Updater,
+    CommandHandler,
+    MessageHandler,
+    Filters,
+    CallbackQueryHandler,
+    CallbackContext,
+)
+import responses
+from scrapers.scraper_trip import scrape_trips
+from scrapers.scraper_amazon import get_product_amazon
+from scrapers.scraper_product import get_product_dna
+from scrapers.scraper_book import get_5_books
+from scrapers.scraper_cinemas import get_trending_in_cinemas_jordan
+from scrapers.scraper_anime import get_anime
+from scrapers.scraper_animations import get_3_Animations
+from scrapers.scraper_taj_cinema import get_movie_details
+
+
+from scrapers.scraper_other import (
+    get_quote,
+    top_10_games_of_all_times,
+    top_10_latest_games,
+    get_random_joke,
+)
+from scrapers.movies_tv_scraper import (
+    top_action_movies,
+    top_comedy_movies,
+    top_horror_movies,
+    top_10_rated_movies,
+    top_action_tv_shows,
+    top_comedy_tv_shows,
+    top_horror_tv_shows,
+    top_10_rated_tv_shows,
+)
+from handle_voice_message import (
+    convert_ogg_to_wav,
+    convert_speech_to_text,
+)
 
 # Getiing bot token from env file
 load_dotenv()
 Bot_Token = os.getenv('TELEGRAM_KEY')
 
-
-'''
-💡Use this version if you deploying it on repl.it
-Add the bot token in secretes section
-# Getiing bot token from env file
-  Bot_Token = os.environ['Bot_Token']
-'''
-
-
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logging.info('Starting Bot...')
 
+## Text messages handling
 def handle_message(update, context):
     text = str(update.message.text).lower()
     logging.info(f'User ({update.message.chat.id}) says: {text}')
@@ -34,17 +64,11 @@ def handle_message(update, context):
     if " -" in text:
         update.message.reply_text("Please make sure to not leave a space between the command and the dash, use this format (Example- What to search for).")
         return
-    if "newegg-" in text:
-        products = get_product_newegg(text)
-        for product in products:
-            update.message.reply_text(product)
-        return
     
     if "amazon-" in text:
         products = get_product_amazon(text)
         for product in products:
             update.message.reply_text(product)
-        # update.message.reply_text(best_product)  
         return
     
     if "book-" in text:
@@ -58,28 +82,55 @@ def handle_message(update, context):
         for product in products:
             update.message.reply_text(product)
         return
+    
+    if "joke" in text:
+        response = get_random_joke()
+        update.message.reply_text(response)
+        return
 
     # Bot response
     response = responses.get_response(text)
     update.message.reply_text(response)
 
-def handle_voice_message(update, context):
-    voice = update.message.voice
-    
-    # Extract necessary information from the voice message
-    file_id = voice.file_id
-    duration = voice.duration
-    
-    # Reply with a string
-    reply_text = f"Received a voice message with file ID: {file_id} and duration: {duration} seconds"
-    update.message.reply_text(reply_text)
-# ...
+## Voice messages handling
+def voice_processing(update: Update, context: CallbackContext):
+    file_id = update.message.voice.file_id
+    file = context.bot.get_file(file_id)
+    file.download('voice_message.ogg')
 
-# We defined this fuction to use as commands
-# all update.message are reply from bots to user
+    convert_ogg_to_wav('voice_message.ogg', 'voice_message.wav')
+    text = convert_speech_to_text('voice_message.wav')
+
+    if text:
+        response = responses.get_response(text)
+
+        # Convert the response to speech
+        engine = pyttsx3.init()
+        temp_audio_path = tempfile.mktemp(suffix='.wav')
+        engine.save_to_file(response, temp_audio_path)
+        engine.runAndWait()
+
+        # Send the voice message
+        with open(temp_audio_path, 'rb') as audio_file:
+            update.message.reply_voice(voice=audio_file)
+            update.message.reply_text(response)
+    else:
+        update.message.reply_text("Sorry, I couldn't convert the voice message to text.")
+
+
 def start(update, context):
-    update.message.reply_text(
-        "Good day there, I'm a Jad, a Chatbot that can communicate with you. I can suggest many things to do for entertainment, including Movies, Tvshows, Video Games, Books, products, quotes and I can also make you laugh :), more services will be added shortly..\n To start, say hey, hi, or hello.\n Get all Commands -/cmd")
+    # Send a string message
+    update.message.reply_text("Good day there, I'm Jad, a Chatbot that can communicate with you.")
+    
+    # Send an image
+    image_path = '../header-chat-box.png'  # Replace with the actual path to your image
+
+    with open(image_path, 'rb') as image_file:
+        update.message.reply_photo(photo=image_file)
+
+    # Additional message
+    update.message.reply_text("I can suggest many things to do for entertainment, including Movies, Tvshows, Video Games, Books, products, quotes and I can also make you laugh :)")
+
 
 def cmd(update, context):
     update.message.reply_text(
@@ -158,8 +209,29 @@ def game(update, context) -> None:
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text('💡Choose a Category:',reply_markup=reply_markup)
 
+def anime(update, context):
+    animes = get_anime()
+    for anime in animes:
+        update.message.reply_text(anime)
+    
+def animation(update, context):
+    animations = get_3_Animations()
+    for animation in animations:
+        update.message.reply_text(animation)
+    
 # this function checks for each button pressed after selecting an option from the menu
+def trip(update, context):
+    trips = scrape_trips()
+    for trip in trips:
+        update.message.reply_text(trip)
+    return
 
+def tajcinema(update, context):
+    movies = get_movie_details()
+    for movie in movies:
+        update.message.reply_text(movie)
+    return
+    
 def button(update: Update, context: CallbackContext) -> None:
     """Parses the CallbackQuery and updates the message text."""
     query = update.callback_query
@@ -219,33 +291,22 @@ if __name__ == '__main__':
     dp = updater.dispatcher
     # Commands handler which callback our commands when user ask for it
     dp.add_handler(CommandHandler('start', start))
-    
     dp.add_handler(CommandHandler('help', help))
-
     dp.add_handler(CommandHandler('cmd', cmd))
-
     dp.add_handler(CommandHandler('socials', socials))
-
     dp.add_handler(CommandHandler('quotes', quote))
-
     dp.add_handler(CommandHandler('movie', movie))
-
     dp.add_handler(CommandHandler('tvshow', tv_show))
-
     dp.add_handler(CommandHandler('joke', joke))
-    
     dp.add_handler(CommandHandler('cinema', cinema))
-    
     dp.add_handler(CommandHandler('game', game))
-    # Messages
+    dp.add_handler(CommandHandler('anime', anime))
+    dp.add_handler(CommandHandler('animation', animation))
+    dp.add_handler(CommandHandler('tajcinema', tajcinema))
+    dp.add_handler(CommandHandler('trip', trip))
     dp.add_handler(MessageHandler(Filters.text, handle_message))
-    # Voices
-    dp.add_handler(MessageHandler(Filters.voice, handle_voice_message))
-    # CallbackQueryHandler
+    dp.add_handler(MessageHandler(Filters.voice, voice_processing))
     dp.add_handler(CallbackQueryHandler(button))
-    # Log all errors
     dp.add_error_handler(error)
-    # Run the bot
     updater.start_polling(1.0)
-    # Idle state give bot time to go in idle
     updater.idle()

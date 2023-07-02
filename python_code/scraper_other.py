@@ -275,21 +275,51 @@ def get_random_joke():
     # Return a random joke from the list
     return random.choice(jokes)
 # print(get_random_joke())
+
+
 def get_5_books():
-    book1= "book1"
-    book2= "book2"
-    book3= "book3"
-    book4= "book4"
-    book5= "book5"
-    return (book1,book2,book3,book4,book5)
+    url = "https://www.goodreads.com/genre/show/245.War"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    book_elements = soup.select("tr > td > a.bookTitle")
+    books = []
+    for element in book_elements[:5]:
+        book = {}
+        book['title'] = element.text.strip()
+        book['link'] = "https://www.goodreads.com" + element['href']
+        books.append(book)
+    return books
 
 def get_5_novels():
-    book1= "book1"
-    book2= "book2"
-    book3= "book3"
-    book4= "book4"
-    book5= "book5"
-    return (book1,book2,book3,book4,book5)
+    url = "https://www.goodreads.com/genre/show/50-science-fiction"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    novel_elements = soup.select("tr > td > a.bookTitle")
+    novels = []
+    for element in novel_elements[:5]:
+        novel = {}
+        novel['title'] = element.text.strip()
+        novel['link'] = "https://www.goodreads.com" + element['href']
+        novels.append(novel)
+    return novels
+
+top_5_books = get_5_books()
+top_5_novels = get_5_novels()
+
+# Print the top 5 books
+print("Top 5 Books:")
+for book in top_5_books:
+    print(f"Title: {book['title']}")
+    print(f"Link: {book['link']}")
+    print()
+
+# Print the top 5 novels
+print("Top 5 Novels:")
+for novel in top_5_novels:
+    print(f"Title: {novel['title']}")
+    print(f"Link: {novel['link']}")
+    print()
+
 
 def get_product():
     product = "product"

@@ -6,6 +6,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, CallbackContext
 from scraper_other import get_quote,top_10_games_of_all_times,top_10_latest_games,get_random_joke,get_5_books,get_5_novels,get_product
 from movies_tv_scraper import top_action_movies, top_comedy_movies, top_horror_movies,top_10_rated_movies,top_action_tv_shows,top_comedy_tv_shows,top_horror_tv_shows,top_10_rated_tv_shows
+# from scraper_book.py import 
 
 # Getiing bot token from env file
 load_dotenv()
@@ -141,7 +142,7 @@ def product(update, context) -> None:
 def button(update: Update, context: CallbackContext) -> None:
     """Parses the CallbackQuery and updates the message text."""
     query = update.callback_query
-    query.answer()
+    query.answer() 
     # print(f"Query message: {query.message}")
 
     # Now we can use context.bot, context.args and query.message

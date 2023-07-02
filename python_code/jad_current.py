@@ -2,10 +2,12 @@ import os
 import logging
 import responses
 from dotenv import load_dotenv
+from scraper_trip import scrape_trips
 from scraper_amazon import get_product_amazon
-from scraper_product import get_product_newegg
+# from scraper_product import  get_product_dna
 from scraper_book import get_5_books
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+# from scraper_cinemas import get_trending_in_cinemas_jordan
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, Voice
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, CallbackContext
 from scraper_other import get_quote,top_10_games_of_all_times,top_10_latest_games,get_random_joke
 from movies_tv_scraper import top_action_movies, top_comedy_movies, top_horror_movies,top_10_rated_movies,top_action_tv_shows,top_comedy_tv_shows,top_horror_tv_shows,top_10_rated_tv_shows
@@ -30,16 +32,15 @@ def handle_message(update, context):
     text = str(update.message.text).lower()
     logging.info(f'User ({update.message.chat.id}) says: {text}')
     
-    if "newegg-" in text:
-        products = get_product_newegg(text)
-        for product in products:
-            update.message.reply_text(product)
+    if " -" in text:
+        update.message.reply_text("Please make sure to not leave a space between the command and the dash, use this format (Example- What to search for).")
         return
     
     if "amazon-" in text:
         products = get_product_amazon(text)
         for product in products:
             update.message.reply_text(product)
+        # update.message.reply_text(best_product)  
         return
     
     if "book-" in text:
@@ -47,22 +48,70 @@ def handle_message(update, context):
         for product in products:
             update.message.reply_text(product)
         return
+    
+    if "dna-" in text:
+        products = get_product_dna(text)
+        for product in products:
+            update.message.reply_text(product)
+        return
+    
+    if "joke" in text:
+        response = get_random_joke()
+        update.message.reply_text(response)
+        return
 
     # Bot response
     response = responses.get_response(text)
     update.message.reply_text(response)
 
+def handle_voice_message(update, context):
+    voice = update.message.voice
+    
+    # Extract necessary information from the voice message
+    file_id = voice.file_id
+    duration = voice.duration
+    
+    # Reply with a string
+    reply_text = f"Received a voice message with file ID: {file_id} and duration: {duration} seconds"
+    update.message.reply_text(reply_text)
+# ...
 
 # We defined this fuction to use as commands
 # all update.message are reply from bots to user
+# def start(update, context):
+#     update.message.reply_text(
+#         "Good day there, I'm a Jad, a Chatbot that can communicate with you. I can suggest many things to do for entertainment, including Movies, Tvshows, Video Games, Books, products, quotes and I can also make you laugh :), more services will be added shortly..\n To start, say hey, hi, or hello.\n Get all Commands -/cmd"
+#         )
 def start(update, context):
-    update.message.reply_text(
-        "Good day there, I'm a Jad, a Chatbot that can communicate with you. I can suggest many things to do for entertainment, including Movies, Tvshows, Video Games, Books, products, quotes and I can also make you laugh :), more services will be added shortly..\n To start, say hey, hi, or hello.\n Get all Commands -/cmd")
+    # Send a string message
+    update.message.reply_text("Good day there, I'm Jad, a Chatbot that can communicate with you.")
+    
+    # Send an image
+    image_path = '../header-chat-box.png'  # Replace with the actual path to your image
+
+    with open(image_path, 'rb') as image_file:
+        update.message.reply_photo(photo=image_file)
+
+    # Additional message
+    update.message.reply_text("I can suggest many things to do for entertainment, including Movies, Tvshows, Video Games, Books, products, quotes and I can also make you laugh :)")
+
 
 def cmd(update, context):
     update.message.reply_text(
-        '/start - Description on how to get started\n/quotes recieve a random quote\n/movie - choose a movie genre and recive a list of movies\n/tvshow - choose a tvshow genre and recive a list of shows\n/book - choose a book genre and recive a list of book\n/joke - Recive a random joke\n/game - Recive the top 10 games of your choice\n/product - Look up a product on the Internet\n/help - Ask for help\n/cmd - A list of all commands\n/socials - The link for Our Github')
-    
+        '/start - Description on how to get started\n'
+        '/quotes - Receive a random quote\n'
+        '/cinema - Trending movies in Jordanian cinemas\n'
+        '/movie - Choose a movie genre and receive a list of movies\n'
+        '/tvshow - Choose a TV show genre and receive a list of shows\n'
+        '/book - Choose a book genre and receive a list of books\n'
+        '/joke - Receive a random joke\n'
+        '/game - Receive the top 10 games of your choice\n'
+        '/product - Look up a product on the Internet\n'
+        '/help - Ask for help\n'
+        '/cmd - A list of all commands\n'
+        '/socials - The link for our GitHub'
+    )
+
 def socials(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text="This is our organizations Git Repo:\n {Github} https://github.com/JAD-Bot-Team/JAD\n\n ")
@@ -80,6 +129,11 @@ def quote(update, context):
 def joke(update, context):
     random_joke = get_random_joke()
     update.message.reply_text(random_joke)
+    
+def cinema(update, context):
+    trending_movies = get_trending_in_cinemas_jordan()
+    for movie in trending_movies:
+        update.message.reply_text(movie)
 
 # movies
 def movie(update, context):
@@ -119,19 +173,13 @@ def game(update, context) -> None:
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text('💡Choose a Category:',reply_markup=reply_markup)
 
-def product(update, context) -> None:
-    """Sends a message with three inline buttons attached."""
-    keyboard = [
-        [
-            InlineKeyboardButton("Amazon", callback_data='product_amazon'),
-            InlineKeyboardButton("Bestbuy", callback_data='product_bestbuy'),
-        ]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text('💡Choose a Category:',reply_markup=reply_markup)
-
 # this function checks for each button pressed after selecting an option from the menu
-
+def trip(update, context):
+    trips = scrape_trips()
+    for trip in trips:
+        update.message.reply_text(trip)
+    return
+    
 def button(update: Update, context: CallbackContext) -> None:
     """Parses the CallbackQuery and updates the message text."""
     query = update.callback_query
@@ -191,7 +239,7 @@ if __name__ == '__main__':
     dp = updater.dispatcher
     # Commands handler which callback our commands when user ask for it
     dp.add_handler(CommandHandler('start', start))
-
+    
     dp.add_handler(CommandHandler('help', help))
 
     dp.add_handler(CommandHandler('cmd', cmd))
@@ -205,12 +253,16 @@ if __name__ == '__main__':
     dp.add_handler(CommandHandler('tvshow', tv_show))
 
     dp.add_handler(CommandHandler('joke', joke))
-
-    dp.add_handler(CommandHandler('product', product))
+    
+    dp.add_handler(CommandHandler('cinema', cinema))
     
     dp.add_handler(CommandHandler('game', game))
+    
+    dp.add_handler(CommandHandler('trip', trip))
     # Messages
     dp.add_handler(MessageHandler(Filters.text, handle_message))
+    # Voices
+    dp.add_handler(MessageHandler(Filters.voice, handle_voice_message))
     # CallbackQueryHandler
     dp.add_handler(CallbackQueryHandler(button))
     # Log all errors

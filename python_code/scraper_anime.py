@@ -14,9 +14,11 @@ def get_anime():
 
     for title in anime_title[:10]:
         movie = {}
-        movie['title'] = title.text.strip()
+        
+        movie['title'] = title.find('a').get_text()
         movie['link'] = "https://www.imdb.com/" + title.a['href']
         # print("https://www.imdb.com/" + title.a['href'])
+        # print(movie['title'])
 
         poster = title.find_next("div", class_="lister-item-image ribbonize")
         if poster and poster.img:

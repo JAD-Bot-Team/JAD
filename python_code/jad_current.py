@@ -19,10 +19,9 @@ from movies_tv_scraper import (
     top_horror_tv_shows,
     top_10_rated_tv_shows,
 )
-import speech_recognition as sr
-from pydub import AudioSegment
+from handle_voice_message import convert_ogg_to_wav, convert_speech_to_text
+import tempfile
 import pyttsx3
-
 # Getiing bot token from env file
 load_dotenv()
 Bot_Token = os.getenv('TELEGRAM_KEY')
@@ -47,33 +46,26 @@ def voice_processing(update: Update, context: CallbackContext):
 
     convert_ogg_to_wav('voice_message.ogg', 'voice_message.wav')
     text = convert_speech_to_text('voice_message.wav')
+
     if text:
-        handle_message(update, context, text)
+        response = responses.get_response(text)
+
+        # Convert the response to speech
+        engine = pyttsx3.init()
+        temp_audio_path = tempfile.mktemp(suffix='.wav')
+        engine.save_to_file(response, temp_audio_path)
+        engine.runAndWait()
+
+        # Send the voice message
+        with open(temp_audio_path, 'rb') as audio_file:
+            update.message.reply_voice(voice=audio_file)
+            update.message.reply_text(response)
+
     else:
         update.message.reply_text("Sorry, I couldn't convert the voice message to text.")
 
 
-    convert_ogg_to_wav('voice_message.ogg', 'voice_message.wav')
-    text = convert_speech_to_text('voice_message.wav')
-    if not text:
-        update.message.reply_text("Sorry, I couldn't convert the voice message to text.")
-    
 
-
-def convert_ogg_to_wav(ogg_filename, wav_filename):
-    sound = AudioSegment.from_ogg(ogg_filename)
-    sound.export(wav_filename, format="wav")
-
-
-def convert_speech_to_text(filename):
-    r = sr.Recognizer()
-    with sr.AudioFile(filename) as source:
-        audio_data = r.record(source)
-        try:
-            text = r.recognize_google(audio_data)
-            return text.lower()
-        except sr.UnknownValueError:
-            return None
 
 
 def handle_message(update, context, text=None):

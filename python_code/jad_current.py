@@ -6,16 +6,27 @@ from scraper_trip import scrape_trips
 from scraper_amazon import get_product_amazon
 # from scraper_product import  get_product_dna
 from scraper_book import get_5_books
+
 # from scraper_cinemas import get_trending_in_cinemas_jordan
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, Voice
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, CallbackContext
-from scraper_other import get_quote,top_10_games_of_all_times,top_10_latest_games,get_random_joke
-from movies_tv_scraper import top_action_movies, top_comedy_movies, top_horror_movies,top_10_rated_movies,top_action_tv_shows,top_comedy_tv_shows,top_horror_tv_shows,top_10_rated_tv_shows
-
+from scraper_other import get_quote, top_10_games_of_all_times, top_10_latest_games, get_random_joke
+from movies_tv_scraper import (
+    top_action_movies,
+    top_comedy_movies,
+    top_horror_movies,
+    top_10_rated_movies,
+    top_action_tv_shows,
+    top_comedy_tv_shows,
+    top_horror_tv_shows,
+    top_10_rated_tv_shows,
+)
+from handle_voice_message import convert_ogg_to_wav, convert_speech_to_text
+import tempfile
+import pyttsx3
 # Getiing bot token from env file
 load_dotenv()
 Bot_Token = os.getenv('TELEGRAM_KEY')
-
 
 '''
 💡Use this version if you deploying it on repl.it
@@ -24,25 +35,64 @@ Add the bot token in secretes section
   Bot_Token = os.environ['Bot_Token']
 '''
 
-
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
+)
 logging.info('Starting Bot...')
 
-def handle_message(update, context):
-    text = str(update.message.text).lower()
+
+def voice_processing(update: Update, context: CallbackContext):
+    file_id = update.message.voice.file_id
+    file = context.bot.get_file(file_id)
+    file.download('voice_message.ogg')
+
+    convert_ogg_to_wav('voice_message.ogg', 'voice_message.wav')
+    text = convert_speech_to_text('voice_message.wav')
+
+    if text:
+        response = responses.get_response(text)
+
+        # Convert the response to speech
+        engine = pyttsx3.init()
+        temp_audio_path = tempfile.mktemp(suffix='.wav')
+        engine.save_to_file(response, temp_audio_path)
+        engine.runAndWait()
+
+        # Send the voice message
+        with open(temp_audio_path, 'rb') as audio_file:
+            update.message.reply_voice(voice=audio_file)
+            update.message.reply_text(response)
+
+    else:
+        update.message.reply_text("Sorry, I couldn't convert the voice message to text.")
+
+
+
+
+
+def handle_message(update, context, text=None):
+    if text is None:
+        text = str(update.message.text).lower()
     logging.info(f'User ({update.message.chat.id}) says: {text}')
+
+    if "newegg-" in text:
+        products = get_product_newegg(text)
+        for product in products:
+            update.message.reply_text(product)
+        return
+
     
     if " -" in text:
         update.message.reply_text("Please make sure to not leave a space between the command and the dash, use this format (Example- What to search for).")
-        return
-    
+
+
     if "amazon-" in text:
         products = get_product_amazon(text)
         for product in products:
             update.message.reply_text(product)
         # update.message.reply_text(best_product)  
         return
-    
+
     if "book-" in text:
         products = get_5_books(text)
         for product in products:
@@ -60,21 +110,9 @@ def handle_message(update, context):
         update.message.reply_text(response)
         return
 
-    # Bot response
     response = responses.get_response(text)
     update.message.reply_text(response)
 
-def handle_voice_message(update, context):
-    voice = update.message.voice
-    
-    # Extract necessary information from the voice message
-    file_id = voice.file_id
-    duration = voice.duration
-    
-    # Reply with a string
-    reply_text = f"Received a voice message with file ID: {file_id} and duration: {duration} seconds"
-    update.message.reply_text(reply_text)
-# ...
 
 # We defined this fuction to use as commands
 # all update.message are reply from bots to user
@@ -235,7 +273,8 @@ def error(update, context):
 
 # Run the programms from here
 if __name__ == '__main__':
-    updater = Updater(Bot_Token, use_context=True)
+    
+    updater = Updater(token=Bot_Token, use_context=True)
     dp = updater.dispatcher
     # Commands handler which callback our commands when user ask for it
     dp.add_handler(CommandHandler('start', start))
@@ -261,8 +300,10 @@ if __name__ == '__main__':
     dp.add_handler(CommandHandler('trip', trip))
     # Messages
     dp.add_handler(MessageHandler(Filters.text, handle_message))
-    # Voices
-    dp.add_handler(MessageHandler(Filters.voice, handle_voice_message))
+
+    
+    dp.add_handler(MessageHandler(Filters.voice, voice_processing))
+
     # CallbackQueryHandler
     dp.add_handler(CallbackQueryHandler(button))
     # Log all errors

@@ -200,12 +200,21 @@ def cmd(update, context):
         '/game - Get the top 10 games of your choice\n'
         '/help - Ask for help\n'
         '/cmd - A list of all commands\n'
-        '/socials - The link for our GitHub'
+        '/contact - Authors of this project and the link to our GitHub Orgaization\n'
     )
 
-def socials(update, context):
+def contact(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
-                             text="This is our organizations Git Repo:\n {Github} https://github.com/JAD-Bot-Team/JAD\n\n ")
+                                text ='''
+Our Team Members:\n
+- Malik Alhudrub
+- Leena Alzaben
+- Maysa'a Al Batayneh
+- Hasan Alrawaqa
+- Mones Odetallah
+- Al Mutaz Billah Abu Taha\n
+This is our organizations Git Repo:\n {Github} https://github.com/JAD-Bot-Team/JAD\n
+                                ''')
 
 def help(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
@@ -355,7 +364,7 @@ if __name__ == '__main__':
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('help', help))
     dp.add_handler(CommandHandler('cmd', cmd))
-    dp.add_handler(CommandHandler('socials', socials))
+    dp.add_handler(CommandHandler('contact', contact))
     dp.add_handler(CommandHandler('quotes', quote))
     dp.add_handler(CommandHandler('movie', movie))
     dp.add_handler(CommandHandler('tvshow', tv_show))

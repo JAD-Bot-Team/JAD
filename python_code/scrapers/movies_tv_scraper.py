@@ -3,6 +3,7 @@ import json
 import datetime
 import requests
 from bs4 import BeautifulSoup
+import sys
 
 def top_action_movies():
     url = "https://www.imdb.com/search/title/?genres=Action&explore=genres&title_type=feature&ref_=ft_movie_0"
@@ -242,9 +243,13 @@ def top_10_rated_movies():
         movie_str += f"IMDb Link: {movie['link']}\n"
         movie_str += f"Rating: {movie['rating']}\n"
         top_ten_movies.append(movie_str)
-    print("Sent top 10 rated movies 🚀")
+    
+    # Print the message using sys.stdout to handle Unicode characters
+    message = "Sent top 10 rated movies 🚀"
+    sys.stdout.buffer.write(message.encode('utf-8'))
+    sys.stdout.buffer.write(b'\n')
+    
     return top_ten_movies
-
 
 
 
@@ -449,6 +454,52 @@ def top_horror_tv_shows():
     print("Sent top 5 Horror tv shows 🚀")
     return top_five_movies
 
+# def top_10_rated_tv_shows():
+#     url = "https://www.imdb.com/chart/toptv?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=470df400-70d9-4f35-bb05-8646a1195842&pf_rd_r=75SEDC7QBKAPM1C8PWF8&pf_rd_s=right-4&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_ql_6"
+
+#     # Add a user-agent header to the request
+#     headers = {
+#         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+#     }
+#     response = requests.get(url, headers=headers)
+
+#     # Create a BeautifulSoup object to parse the HTML content
+#     soup = BeautifulSoup(response.content, "html.parser")
+
+#     # Find all the movie titles within <td> tags and class "titleColumn"
+#     movie_titles = soup.find_all("td", class_="titleColumn")
+
+#     # Initialize a list to store movie details
+#     movies = []
+
+#     # Extract the details for each movie
+#     for title in movie_titles[:10]:
+#         movie = {}
+
+#         # Get the movie title
+#         movie['title'] = title.a.text.strip()
+
+#         # Get the IMDb link for the movie
+#         movie['link'] = "https://www.imdb.com" + title.a['href']
+
+#         # Get the movie rating
+#         rating = title.find_next("td", class_="ratingColumn imdbRating")
+#         movie['rating'] = rating.text.strip()
+
+#         # Add the movie details to the list
+#         movies.append(movie)
+
+#     # Return the top ten movies as separate strings
+#     top_ten_movies = []
+#     for movie in movies:
+#         movie_str = ""
+#         movie_str += f"Title: {movie['title']}\n"
+#         movie_str += f"IMDb Link: {movie['link']}\n"
+#         movie_str += f"Rating: {movie['rating']}\n"
+#         top_ten_movies.append(movie_str)
+#     print("Sent top 10 rated tv shows 🚀")
+#     return top_ten_movies
+
 def top_10_rated_tv_shows():
     url = "https://www.imdb.com/chart/toptv?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=470df400-70d9-4f35-bb05-8646a1195842&pf_rd_r=75SEDC7QBKAPM1C8PWF8&pf_rd_s=right-4&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_ql_6"
 
@@ -461,37 +512,39 @@ def top_10_rated_tv_shows():
     # Create a BeautifulSoup object to parse the HTML content
     soup = BeautifulSoup(response.content, "html.parser")
 
-    # Find all the movie titles within <td> tags and class "titleColumn"
-    movie_titles = soup.find_all("td", class_="titleColumn")
+    # Find all the TV show titles within <td> tags and class "titleColumn"
+    tv_show_titles = soup.find_all("td", class_="titleColumn")
 
-    # Initialize a list to store movie details
-    movies = []
+    # Initialize a list to store TV show details
+    tv_shows = []
 
-    # Extract the details for each movie
-    for title in movie_titles[:10]:
-        movie = {}
+    # Extract the details for each TV show
+    for title in tv_show_titles[:10]:
+        tv_show = {}
 
-        # Get the movie title
-        movie['title'] = title.a.text.strip()
+        # Get the TV show title
+        tv_show['title'] = title.a.text.strip()
 
-        # Get the IMDb link for the movie
-        movie['link'] = "https://www.imdb.com" + title.a['href']
+        # Get the IMDb link for the TV show
+        tv_show['link'] = "https://www.imdb.com" + title.a['href']
 
-        # Get the movie rating
+        # Get the TV show rating
         rating = title.find_next("td", class_="ratingColumn imdbRating")
-        movie['rating'] = rating.text.strip()
+        tv_show['rating'] = rating.text.strip()
 
-        # Add the movie details to the list
-        movies.append(movie)
+        # Add the TV show details to the list
+        tv_shows.append(tv_show)
 
-    # Return the top ten movies as separate strings
-    top_ten_movies = []
-    for movie in movies:
-        movie_str = ""
-        movie_str += f"Title: {movie['title']}\n"
-        movie_str += f"IMDb Link: {movie['link']}\n"
-        movie_str += f"Rating: {movie['rating']}\n"
-        top_ten_movies.append(movie_str)
-    print("Sent top 10 rated tv shows 🚀")
-    return top_ten_movies
+    # Return the top ten TV shows as separate strings
+    top_ten_tv_shows = []
+    for tv_show in tv_shows:
+        tv_show_str = ""
+        tv_show_str += f"Title: {tv_show['title']}\n"
+        tv_show_str += f"IMDb Link: {tv_show['link']}\n"
+        tv_show_str += f"Rating: {tv_show['rating']}\n"
+        top_ten_tv_shows.append(tv_show_str)
+    print("Sent top 10 rated TV shows 🚀")
+    return top_ten_tv_shows
+
+
 

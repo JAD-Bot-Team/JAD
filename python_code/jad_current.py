@@ -29,6 +29,7 @@ from scrapers.scraper_animations import get_3_Animations
 from scrapers.scraper_taj_cinema import get_movie_details
 from object_detection import perform_object_detection
 from scrapers.scraper_opensouq import get_product_open_souq
+from scrapers.scraper_events import scrape_events_from_url
 from scrapers.scraper_other import (
     get_quote,
     top_10_games_of_all_times,
@@ -94,11 +95,17 @@ def handle_message(update, context):
         response = get_random_joke()
         update.message.reply_text(response)
         return
+    
+    if "quote" in text:
+        data = get_quote()
+        update.message.reply_text(data)
+        return
 
     # Bot response
     response = responses.get_response(text)
     update.message.reply_text(response)
-    
+
+## Image handling
 def image_handler(update: Update, context: CallbackContext):
     message = update.message
 
@@ -111,7 +118,7 @@ def image_handler(update: Update, context: CallbackContext):
         os.makedirs('downloaded_images', exist_ok=True)
 
         # Generate a unique filename
-        filename = f'{uuid.uuid4()}.jpg'
+        filename = 'image.jpg'
         file_path = os.path.join('downloaded_images', filename)
 
         # Download the image
@@ -176,18 +183,21 @@ def start(update, context):
     # Additional message
     update.message.reply_text("I can suggest many things to do for entertainment, including Movies, Tvshows, Video Games, Books, products, quotes and I can also make you laugh :)")
 
-
 def cmd(update, context):
     update.message.reply_text(
-        '/start - Description on how to get started\n'
+        '/start - Get started\n'
         '/quotes - Receive a random quote\n'
         '/cinema - Trending movies in Jordanian cinemas\n'
+        '/tajcinema - Movies on tajcinema\n'
         '/movie - Choose a movie genre and receive a list of movies\n'
         '/tvshow - Choose a TV show genre and receive a list of shows\n'
-        '/book - Choose a book genre and receive a list of books\n'
-        '/joke - Receive a random joke\n'
-        '/game - Receive the top 10 games of your choice\n'
-        '/product - Look up a product on the Internet\n'
+        '/anime - Get random 3 from top Anime\n'
+        '/animation - Get random 3 Animation movies\n'
+        '/tvshow - Choose a TV show genre and receive a list of shows\n'
+        '/joke - Get a random joke\n'
+        '/trip - Display local trip plans with prices\n'
+        '/events - Show all upcoming events in Jordan\n'
+        '/game - Get the top 10 games of your choice\n'
         '/help - Ask for help\n'
         '/cmd - A list of all commands\n'
         '/socials - The link for our GitHub'
@@ -200,7 +210,7 @@ def socials(update, context):
 def help(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text="This is our organizations Git Repo:\n {Github} https://github.com/JAD-Bot-Team/JAD\n\n ")
-    
+
 # return a random quote
 def quote(update, context):
     data = get_quote()
@@ -210,7 +220,7 @@ def quote(update, context):
 def joke(update, context):
     random_joke = get_random_joke()
     update.message.reply_text(random_joke)
-    
+
 def cinema(update, context):
     trending_movies = get_trending_in_cinemas_jordan()
     for movie in trending_movies:
@@ -276,6 +286,12 @@ def tajcinema(update, context):
     for movie in movies:
         update.message.reply_text(movie)
     return
+
+def events(update, context):
+    events = scrape_events_from_url()
+    for event in events:
+        update.message.reply_text(event)
+    return
     
 def button(update: Update, context: CallbackContext) -> None:
     """Parses the CallbackQuery and updates the message text."""
@@ -330,6 +346,7 @@ def error(update, context):
     logging.error(f'Update {update} caused error {context.error}')
 
 
+
 # Run the programms from here
 if __name__ == '__main__':
     updater = Updater(Bot_Token, use_context=True)
@@ -349,6 +366,7 @@ if __name__ == '__main__':
     dp.add_handler(CommandHandler('animation', animation))
     dp.add_handler(CommandHandler('tajcinema', tajcinema))
     dp.add_handler(CommandHandler('trip', trip))
+    dp.add_handler(CommandHandler('events', events))
     dp.add_handler(MessageHandler(Filters.text, handle_message))
     dp.add_handler(MessageHandler(Filters.voice, voice_processing))
     dp.add_handler(MessageHandler(Filters.photo, image_handler))
@@ -356,3 +374,4 @@ if __name__ == '__main__':
     dp.add_error_handler(error)
     updater.start_polling(1.0)
     updater.idle()
+    

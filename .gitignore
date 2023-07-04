@@ -1,0 +1,6 @@
+.venv
+.env
+.vscode
+__pycache__
+older_code
+ssd_
